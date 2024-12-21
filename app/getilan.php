@@ -1,6 +1,6 @@
 <?php
-header('Content-Type: application/json');
 include 'config.php'; // Bağlantı için config dosyasını dahil et
+require_once '../cors.php'; // CORS başlıklarını kontrol etmek için CORS dosyasını dahil ediyoruz
 
 try {
     $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0;
@@ -10,7 +10,7 @@ try {
         SELECT ilanlar.id, ilanlar.title, ilanlar.imageurl1, ilanlar.rent, ilanlar.userID, users.displayName 
         FROM ilanlar 
         INNER JOIN users ON ilanlar.userID = users.id
-        WHERE ilanlar.imageurl1 IS NOT NULL
+        WHERE ilanlar.imageurl1 IS NOT NULL AND ilanlar.onay_durumu = 1
         LIMIT :offset, :limit
     ";
     $statement = $baglanti->prepare($query);

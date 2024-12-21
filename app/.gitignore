@@ -1,0 +1,20 @@
+# Projenin belirli klasörleri ve dosyaları için .gitignore
+
+# Çıktı klasörleri
+vendor/
+node_modules/
+cache/
+logs/
+tmp/
+
+# Çevresel dosyalar
+.env
+*.log
+*.cache
+
+# Özel klasör
+ilanimages/
+
+# IDE dosyaları
+.vscode/
+.idea/

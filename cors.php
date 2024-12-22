@@ -2,6 +2,7 @@
 // İzin verilen domainleri listeleyin
 $allowed_origins = [
     "http://localhost:3000",
+    "http://192.168.1.106:3000",
     "https://roomiefies.com/",
     "https://www.roomiefies.com/"
 ];

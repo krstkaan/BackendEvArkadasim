@@ -1,17 +1,17 @@
 <?php
 header('Content-Type: application/json');
-require_once 'config.php';  // Veritabanı bağlantısı için config dosyası
-require_once 'jwt.php';     // JWT oluşturma ve doğrulama fonksiyonlarını içeren dosyas
-//require_once 'appcontrol.php';  // Application kontrol dosyası
+require_once 'config.php';
+require_once 'jwt.php';
+
 $email = GuvenliPostAl('email');
 $password = GuvenliPostAl('password');
 $sonuc = 0;
 $mesaj = "";
 $userId = 0;
 $displayname = "";
-$photoURL = "";
 $token = "";
 $hata = 0;
+$birthdate = ""; // Başlangıç değeri olarak boş string
 
 if ($email == "") {
     $hata = 1;
@@ -22,7 +22,6 @@ if ($password == "") {
     $mesaj = $mesaj . "Bir Şifre Yazınız \n";
 }
 if ($hata == 0) {
-    // Kullanıcı bilgilerini veritabanından kontrol ediyoruz
     $query = $baglanti->prepare("SELECT * FROM users WHERE email = :email");
     $query->bindParam(':email', $email);
     $query->execute();
@@ -33,13 +32,15 @@ if ($hata == 0) {
             $sonuc = 0;
             $token = "";
         } elseif (password_verify($password, $user['password'])) {
-            // Kullanıcı doğru ise JWT token oluşturuyoruz
-            $token = createJWT($user['id']);  // JWT fonksiyonunda userId'yi kullanarak token oluşturuyoruz
+            $token = createJWT($user['id']);
             $sonuc = 1;
             $mesaj = "Giriş Başarılı";
             $userId = $user['id'];
             $displayname = $user['displayName'];
-            //$photoURL = $user['photoURL'];
+            
+            // birthdate değeri null ise boş string yap
+             $birthdate = $user['birthdate'] ? $user['birthdate'] : "";
+
         } else {
             $mesaj = "Kullanıcı adı veya şifre hatalı";
             $sonuc = 0;
@@ -57,7 +58,7 @@ $results = array(
     'token' => $token,
     'userId' => "$userId",
     'displayname' => $displayname,
-    //'photoURL' => $photoURL
+    'birthdate' => $birthdate,
 );
 echo json_encode($results);
 $baglanti = null;

@@ -27,14 +27,24 @@ if ($hata == 0) {
     $query->bindParam(':email', $email);
     $query->execute();
     $user = $query->fetch(PDO::FETCH_ASSOC);
-    if ($user && password_verify($password, $user['password'])) {
-        // Kullanıcı doğru ise JWT token oluşturuyoruz
-        $token = createJWT($user['id']);  // JWT fonksiyonunda userId'yi kullanarak token oluşturuyoruz
-        $sonuc = 1;
-        $mesaj = "Giriş Başarılı";
-        $userId = $user['id'];
-        $displayname = $user['displayName'];
-        //$photoURL = $user['photoURL'];
+    if ($user) {
+        if ($user['onay_durumu'] == 0) {
+            $mesaj = "Hesabınız onaylanmamış. Lütfen onaylanmasını bekleyiniz.";
+            $sonuc = 0;
+            $token = "";
+        } elseif (password_verify($password, $user['password'])) {
+            // Kullanıcı doğru ise JWT token oluşturuyoruz
+            $token = createJWT($user['id']);  // JWT fonksiyonunda userId'yi kullanarak token oluşturuyoruz
+            $sonuc = 1;
+            $mesaj = "Giriş Başarılı";
+            $userId = $user['id'];
+            $displayname = $user['displayName'];
+            //$photoURL = $user['photoURL'];
+        } else {
+            $mesaj = "Kullanıcı adı veya şifre hatalı";
+            $sonuc = 0;
+            $token = "";
+        }
     } else {
         $mesaj = "Kullanıcı adı veya şifre hatalı";
         $sonuc = 0;

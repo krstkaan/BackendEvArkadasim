@@ -121,7 +121,7 @@ try {
     $query->execute();
 
     $sonuc = 1;
-    $mesaj = "İlan başarıyla eklendi.";
+    $mesaj = "İlanınız onaylandıktan sonra yayınlanacaktır.";
 } catch (PDOException $e) {
     $sonuc = 0;
     $mesaj = "Hata: " . $e->getMessage();

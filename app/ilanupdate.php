@@ -116,7 +116,8 @@ try {
         selectedMahalle = :selectedMahalle,
         imageurl1 = COALESCE(NULLIF(:imageurl1, ''), imageurl1),
         imageurl2 = COALESCE(NULLIF(:imageurl2, ''), imageurl2),
-        imageurl3 = COALESCE(NULLIF(:imageurl3, ''), imageurl3)
+        imageurl3 = COALESCE(NULLIF(:imageurl3, ''), imageurl3),
+        onay_durumu = 0
         WHERE id = :id
     ");
     $query->bindParam(':id', $id);
@@ -134,7 +135,7 @@ try {
     $query->bindParam(':selectedIlce', $selectedIlce);
     $query->bindParam(':selectedMahalle', $selectedMahalle);
     $query->bindParam(':imageurl1', $imageurl1);
-     $query->bindParam(':imageurl2', $imageurl2);
+    $query->bindParam(':imageurl2', $imageurl2);
     $query->bindParam(':imageurl3', $imageurl3);
     $query->execute();
 
